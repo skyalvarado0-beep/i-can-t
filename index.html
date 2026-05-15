@@ -1,0 +1,194 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>for you (pls read)</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff7f9;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .box {
+      background: white;
+      width: 92%;
+      max-width: 420px;
+      padding: 35px 18px;
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 1.8rem;
+      color: #333;
+    }
+
+    .text {
+      font-size: 1.05rem;
+      line-height: 1.5;
+      margin-bottom: 25px;
+      color: #555;
+    }
+
+    .success-text {
+      font-weight: bold;
+      color: #ff6b81;
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .dito-dudutan {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      min-height: 60px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #yes {
+      background: #ff6b81;
+      color: white;
+      z-index: 10;
+    }
+
+    #no {
+      background: #eee;
+      color: #555;
+      position: fixed;
+      left: 50%;
+      top: 60%;
+      transform: translate(-50%, -50%);
+      transition: all 0.2s ease-out; 
+      z-index: 999;
+      white-space: nowrap;
+    }
+
+    #final {
+      display: none;
+    }
+
+    .final-image {
+      width: 100%;
+      max-width: 280px;
+      margin-top: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Main Question Screen -->
+  <div class="box" id="main">
+    <h1>hellooo my belelelelel</h1>
+
+    <div class="text">
+      eto miss kna talaga<br><br>
+      pwede ba kita maka date mi labidabs?<br>
+      pina assist ko yung iba sa ai kasi natatanga na ako
+      <br><br>
+      sorry agad babycakes
+    </div>
+
+    <div class="dito-dudutan">
+      <button id="yes">yes</button>
+      <button id="no">no</button>
+    </div>
+  </div>
+
+  <!-- Final Screen (Hidden until 'Yes' is clicked) -->
+  <div class="box" id="final">
+    <h1>sabi ko na miss mo din ako ih</h1>
+
+    <div class="text">
+      <span class="success-text">sabi ko na papayag ka 😉</span>
+      tnx mhie
+      <br><br>
+      pasensha kana ha
+    </div>
+
+    <!-- The Image she will see -->
+    <img src="https://media.tenor.com/ep0rVuT4AOQAAAAM/fiona-fiona-gallagher.gif" alt="happy" class="final-image">
+  </div>
+
+  <!-- Audio Elements -->
+  <audio id="sad" src="https://www.myinstants.com/media/sounds/guts-theme-berserk.mp3" loop></audio>
+  <audio id="happy" src="https://www.myinstants.com/media/sounds/children-yay-sound-effect.mp3"></audio>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const noBtn = document.getElementById("no");
+      const yesBtn = document.getElementById("yes");
+      const main = document.getElementById("main");
+      const final = document.getElementById("final");
+      const sad = document.getElementById("sad");
+      const happy = document.getElementById("happy");
+
+      let lines = ["no", "ayaw mo?", "weh?", "isip muna", "sure na?", "no talaga?"];
+      let i = 0;
+
+      function moveButton() {
+        // Play sad music as she keeps trying to click 'No'
+        sad.play().catch(() => {});
+
+        // Randomize position within screen bounds
+        const x = Math.random() * (window.innerWidth - 150);
+        const y = Math.random() * (window.innerHeight - 100);
+
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+        noBtn.style.transform = "none";
+
+        noBtn.textContent = lines[i % lines.length];
+        i++;
+      }
+
+      // Chaos Mode: The button moves automatically every 800ms
+      const chaosInterval = setInterval(moveButton, 800);
+
+      // Also move if she tries to hover or touch it
+      noBtn.addEventListener("mouseenter", moveButton);
+      noBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        moveButton();
+      }, { passive: false });
+
+      // When she finally clicks YES
+      yesBtn.addEventListener("click", () => {
+        clearInterval(chaosInterval);
+        
+        sad.pause();
+        sad.currentTime = 0;
+        happy.play().catch(() => {});
+
+        main.style.display = "none";
+        final.style.display = "block";
+        noBtn.style.display = "none";
+      });
+    });
+  </script>
+
+</body>
+</html>
